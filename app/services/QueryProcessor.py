@@ -2,6 +2,7 @@ import os
 # import shutil
 from app.lib.constants import WEEK_KEY
 from app.lib.utils import extract_week_from_query
+from app.models.responseModel import ResponseModel
 import openai 
 from dotenv import load_dotenv
 # from langchain_community.vectorstores import Chroma
@@ -59,4 +60,6 @@ class QueryProcessor:
       
         formatted_response = f"Response: {response_text}\nSources: {sources}"
         print(formatted_response)
-        return formatted_response
+
+        responseModel = ResponseModel(response=response_text, sources=sources)
+        return responseModel

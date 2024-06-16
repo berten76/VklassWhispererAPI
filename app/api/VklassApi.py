@@ -23,7 +23,9 @@ class VklassApi2:
     async def postQuery(self, request: QueryRequest):
         try:
             query = request.query
+            print(f"queri*************** {query}")
             response = self.queryProcessor.process_query(query)
-            return {"response": response}
+            print(f"queriRes*************** {query}")
+            return response
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
