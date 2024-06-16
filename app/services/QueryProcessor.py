@@ -17,13 +17,13 @@ from langchain.prompts import ChatPromptTemplate
 
 CHROMA_PATH = "chroma"
 PROMPT_TEMPLATE = """
-Answer the question based only on the following context if you dont find the answere say that you cant find the answere:
+Svara på frågan baserat endaspå följande sammanhang.:
 
 {context}
 
 ---
 
-Answer the question based on the above context: {question}
+Svara frågorna baserade på ovan context, svara utförligt på svenska. andra ord för "läxa" är "läsläxa" och "veckans ord": {question}
 """
 
 load_dotenv()
@@ -48,8 +48,11 @@ class QueryProcessor:
 
     
         results = self.db.similarity_search_with_relevance_scores(query_text, k=3, filter=filter)
+
         if len(results) == 0 or results[0][1] < 0.7:
-            return "Unable to find matching results."
+            return ResponseModel(response="Kunde inte hitta några svar.", sources="")
+        print("results")
+        print(results)
 
         context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
         prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
@@ -59,7 +62,8 @@ class QueryProcessor:
         sources = [doc.metadata.get("source", None) for doc, _score in results]
       
         formatted_response = f"Response: {response_text}\nSources: {sources}"
-        print(formatted_response)
+        print("context_text")
+        print(context_text)
 
         responseModel = ResponseModel(response=response_text, sources=sources)
         return responseModel

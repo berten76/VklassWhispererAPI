@@ -43,7 +43,7 @@ class DatabaseCreator:
 
     def split_text(self, documents: list[Document]):
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=300,
+            chunk_size=3000,
             chunk_overlap=100,
             length_function=len,
             add_start_index=True,
@@ -51,9 +51,14 @@ class DatabaseCreator:
         chunks = text_splitter.split_documents(documents)
         print(f"Split {len(documents)} documents into {len(chunks)} chunks.")
 
-        document = chunks[1]
-        print(document.page_content)
-        print(document.metadata)
+        #document = chunks[1]
+
+        for chunk in chunks:
+            print("start")
+            print(chunk)
+
+        #print(document.page_content)
+        #print(document.metadata)
 
         return chunks
 
