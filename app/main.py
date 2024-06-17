@@ -30,10 +30,3 @@ db_creator.generate_data_store()
 queryProcessor = QueryProcessor(chroma_instance=chroma_instance)
 vklassApi = VklassApi2(queryProcessor=queryProcessor)
 app.include_router(vklassApi.router)
-#app.include_router(vklass_api.router)
-
-
-# @app.on_event("startup")
-# async def startup_event():
-#     document_processor = DatabaseCreator(data_path="app/data/vklass", chroma_path="chroma")
-#     document_processor.generate_data_store()

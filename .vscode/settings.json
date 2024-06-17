@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/b48849f6-c8b4-429b-ab7e-01207688c2ab/resourceGroups/rg-vklasswhisperer/providers/Microsoft.Web/sites/vklasswhispererBE",
+    "appService.deploySubpath": "."
+}

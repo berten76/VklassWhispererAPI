@@ -19,6 +19,7 @@ class DatabaseCreator:
         load_dotenv()
         openai.api_key = os.environ['OPENAI_API_KEY']
 
+
     def generate_data_store(self):
         documents = self.load_documents()
         chunks = self.split_text(documents)
@@ -51,28 +52,15 @@ class DatabaseCreator:
         chunks = text_splitter.split_documents(documents)
         print(f"Split {len(documents)} documents into {len(chunks)} chunks.")
 
-        #document = chunks[1]
-
         for chunk in chunks:
             print("start")
             print(chunk)
 
-        #print(document.page_content)
-        #print(document.metadata)
-
         return chunks
 
     def save_to_chroma(self, chunks: list[Document]):
-        # if os.path.exists(self.chroma_path):
-        #     shutil.rmtree(self.chroma_path)
-
-        # db = Chroma.from_documents(
-        #     chunks, OpenAIEmbeddings(), persist_directory=self.chroma_path
-        # )
-        
         self.chroma_instance.add_documents(chunks)
         self.chroma_instance.persist()
-
         print(f"Saved {len(chunks)} chunks")
 
 
