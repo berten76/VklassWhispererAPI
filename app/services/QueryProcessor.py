@@ -18,10 +18,10 @@ Svara på frågan baserat endast på följande sammanhang.:
 
 ---
 
-Svara frågorna baserade på ovan context, svara utförligt på svenska. andra ord för "läxa" är "läsläxa" och "veckans ord.": {question}
+Svara på frågan baserad på ovan context, svara utförligt på svenska. Tänk på attandra ord för "läxa" är "läsläxa" och "veckans ord".: {question}
 """
 
-load_dotenv()
+
 
 
 class QueryProcessor:
@@ -30,10 +30,12 @@ class QueryProcessor:
         self.embedding_function = OpenAIEmbeddings()
         self.db = chroma_instance
         self.model = ChatOpenAI()
+        load_dotenv()
         openai.api_key = os.environ['OPENAI_API_KEY']
 
 
     def process_query(self, query_text: str) -> str:
+        # If a week is metioned, only use the document from this week
         week = extract_week_from_query(query_text)
         if week:
             filter = {WEEK_KEY: week}
@@ -67,4 +69,4 @@ class QueryProcessor:
 
     def should_send_pdf(self, input: str) -> bool:
         input_lower = input.lower()
-        return (("skicka" in input_lower) | ("hämta".lower() in input_lower)) & (("veckobrev" in input_lower) | ("veckobrevet" in input_lower))
+        return (("skicka" in input_lower) | ("hämta" in input_lower) | ("ge" in input_lower)) & (("veckobrev" in input_lower) | ("veckobrevet" in input_lower))

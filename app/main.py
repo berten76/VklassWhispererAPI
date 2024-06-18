@@ -1,8 +1,9 @@
-from app.api.VklassApi import VklassApi2
+
+from app.api.VklassAPI import VklassAPI
+from app.lib.constants import PATH_VECKOBREV
 from app.services.DatabaseCreator import DatabaseCreator
 from app.services.QueryProcessor import QueryProcessor
 
-from app.api import VklassApi
 from multiprocessing import Process
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
@@ -24,9 +25,11 @@ app.add_middleware(
 embedding_function = OpenAIEmbeddings()
 chroma_instance = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
 
-db_creator =  DatabaseCreator(data_path="app/data/vklass", chroma_instance=chroma_instance)
+db_creator =  DatabaseCreator(data_path=PATH_VECKOBREV, chroma_instance=chroma_instance)
 db_creator.generate_data_store()
 
 queryProcessor = QueryProcessor(chroma_instance=chroma_instance)
-vklassApi = VklassApi2(queryProcessor=queryProcessor)
-app.include_router(vklassApi.router)
+vklassAPI = VklassAPI(queryProcessor=queryProcessor)
+app.include_router(vklassAPI.router)
+
+#start cmd uvicorn app.main:app --reload 
